@@ -1,0 +1,198 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">PremiumCalculatorApp</h1>
+    <hr class="my-4">
+
+    <div class="row g-5">
+            <div class="col-md-2 text-right">
+              <label>Date of Birth</label>             
+            </div>    
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="DateOfBirth" placeholder="dd/mm/yyyy" value="" required>
+                <div class="invalid-feedback">Valid first name is required.</div>
+            </div>    
+    </div>
+    <div class="row g-7">
+            <div class="col-md-2 text-right">
+              <label>State</label>             
+            </div>    
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="State" placeholder="Enter state prefix" value="" required>
+                <div class="invalid-feedback">Valid first name is required.</div>
+            </div>    
+    </div>
+    <div class="row g-5">
+            <div class="col-md-2 text-right">
+              <label class="form-label">Age</label>             
+            </div>    
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="Age" placeholder="Enter age" value="" required>
+                <div class="invalid-feedback">Valid first name is required.</div>
+            </div>    
+    </div>
+
+    <hr class="my-4">
+    <div class="row g-12">        
+            <div class="col-md-2 text-right">
+              <button type="button" class="btn btn-lg btn-block btn-primary btn-getValue">Get Value</button>
+            </div>    
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="AmountTotal" placeholder="0.00" value="" required>                
+            </div>
+            <div class="col-md-3">
+                
+                <select class="custom-select" id="selectFrecuency">
+                <option selected>Choose one</option>
+                <option value="1">Monthly</option>
+                <option value="2">Quarterly</option>
+                <option value="3">Semi-Annually</option>
+                <option value="4">Annually</option>
+                </select>
+                
+            </div>
+            <div class="col-md-1">
+                <label style="padding-top: 5px;">Annual</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="AmountAnual" placeholder="0.00" value="" required>                
+            </div>
+    </div>
+
+    <div class="row g-12">        
+            <div class="col-md-2 text-right">
+              
+            </div>    
+            <div class="col-md-2">
+                
+            </div>
+            <div class="col-md-3">
+               
+                
+            </div>
+            <div class="col-md-1">
+                <label style="padding-top: 5px;">Monthly</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="AmountMonthly" placeholder="0.00" value="" required>                
+            </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+            initControls();
+
+            $('.btn-getValue').click(function(){
+
+            var dateOfBirth = $('#DateOfBirth').val();
+            var state = $('#State').val();
+            var age = $('#Age').val();
+            $('#selectFrecuency').trigger("change");
+            
+            
+            var postData = {
+                        DateOfBirth: dateOfBirth,
+                        State: state,
+                        Age: age
+                };
+            var resultShowDialog = function (data) {                
+                    //alert(JSON.stringify(data));   
+                    var premium = data.premium || 0;
+                    if(premium == 0)
+                    {
+                        alert('No data retrieved');
+                        clearAllControls();
+                        return;
+                    }
+                    //amountTotal.val(premium);
+                    premium = premium * 1.00;
+                    $('#AmountTotal').val(premium.toFixed(2));
+                    $('#AmountTotal').css({"background-color": "#529ce7"});
+                    $('#AmountTotal').css({"color": "white"});
+
+                    //var premium = data.             
+                }
+            var resultError = function(data){
+                var messageError = data.responseText || "";
+                clearAllControls();
+                alert(messageError);
+            }
+                
+                execAsyncAjaxErr('@ViewBag.UrlWebService' + 'GetPayment?DateOfBirth=' + dateOfBirth 
+                                                          + '&State='+ state 
+                                                          + '&Age=' + age ,
+                                                        null, funcAction = resultShowDialog, funcAction = resultError, dataType = "json");
+            })
+            
+            $('#selectFrecuency').change(function(){
+                //clear controls
+                clearControlsNumbers();
+                //getting data controls
+                var frecuencySelected = $( "#selectFrecuency option:selected" ).index();
+                var amount =  $( "#AmountTotal" ).val();
+                //computing
+                if(frecuencySelected > 0){
+                    switch(frecuencySelected){
+                        case 1:
+                            var monthly = 1.00 * Math.round((amount / 1),2);
+                            var yearly =  1.00 * Math.round((amount * 12), 2);
+                            applyAmount(monthly,yearly);
+                            break;
+                        case 2:
+                            var monthly = 1.00 * Math.round((amount / 3),2);
+                            var yearly =  1.00 * Math.round((amount * 4), 2);
+                            applyAmount(monthly,yearly);
+                            break;
+                        case 3:
+                            var monthly = 1.00 * Math.round((amount / 6),2);
+                            var yearly =  1.00 * Math.round((amount * 2), 2);
+                            applyAmount(monthly,yearly);
+                            break;
+                        case 4:
+                            var monthly = 1.00 * Math.round((amount / 12),2);
+                            var yearly =  1.00 * Math.round((amount), 2);
+                            applyAmount(monthly,yearly);
+                            break;
+                    }
+                }               
+            });
+
+            function initControls(){
+                $('#AmountTotal').prop( "disabled", true );
+                $('#AmountAnual').prop( "disabled", true );
+                $('#AmountMonthly').prop( "disabled", true );
+                
+            }
+            function clearControlsNumbers(){
+                $('#AmountAnual').val(0.00);
+                $('#AmountMonthly').val(0.00);
+                $('#AmountMonthly').css({"color": "black"});
+                $('#AmountMonthly').css({"background-color": "#e9ecef"});
+                $('#AmountAnual').css({"color": "black"});
+                $('#AmountAnual').css({"background-color": "#e9ecef"});                
+            }
+            function clearAllControls(){
+                clearControlsNumbers();
+                $('#AmountTotal').val(0.00);
+                $('#AmountTotal').css({"color": "black"});
+                $('#AmountTotal').css({"background-color": "#e9ecef"});
+
+            }
+            function applyAmount(monthly,yearly){
+                $('#AmountMonthly').val(monthly.toFixed(2));
+                $('#AmountAnual').val(yearly.toFixed(2));
+                $('#AmountMonthly').css({"color": "white"});
+                $('#AmountMonthly').css({"background-color": "#529ce7"});
+                $('#AmountAnual').css({"color": "white"});
+                $('#AmountAnual').css({"background-color": "#529ce7"});
+            }
+        });
+    </script>
+}
