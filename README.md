@@ -40,5 +40,6 @@
 * AJAX callback
 * LINQ
 * RestApi
+* Swagger
 
 **I can change the repository to connect to a database like SQL or Oracle and not used static data**
