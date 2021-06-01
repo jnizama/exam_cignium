@@ -16,7 +16,8 @@
 
 ![image](https://user-images.githubusercontent.com/3922089/120250647-87fcfa00-c244-11eb-9bf3-f731fe3bc59c.png)
 
-> Fronend:
+## FrontEnd
+
 * Web site that consumes the web service created in the previous task; It printed in a textbox in the page, there is a drop down with frequencies (Monthly, Quarterly, Semi-Annually, Annually) and next to it two textboxes for the calculated values of Annual and Monthly; these values are calculated automatically each time the drop-down value selected changes. *
 
 ![image](https://user-images.githubusercontent.com/3922089/120250790-048fd880-c245-11eb-951c-01137c9c09e9.png)
