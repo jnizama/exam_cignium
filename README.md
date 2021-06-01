@@ -34,3 +34,11 @@
 
 ![image](https://user-images.githubusercontent.com/3922089/120251028-ccd56080-c245-11eb-9656-8c628efe467a.png)
 
+**Some topics covert**
+* Adding dependency injection
+* JQuery library
+* AJAX callback
+* LINQ
+* RestApi
+
+**I can change the repository to connect to a database like SQL or Oracle and not used static data**
