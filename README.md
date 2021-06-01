@@ -7,9 +7,8 @@
 * JavaScript programming
 
 
-> Step 1
-![image](https://user-images.githubusercontent.com/3922089/120249942-19b73800-c242-11eb-9899-ef1e06a597f5.png)
+> Webservice (Rest Api)
 
+![Premium Calculator using Swagger](https://user-images.githubusercontent.com/3922089/120250060-6d298600-c242-11eb-823a-b2b47984242c.png)
 
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
 
